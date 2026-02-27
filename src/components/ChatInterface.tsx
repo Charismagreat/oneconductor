@@ -36,42 +36,87 @@ export default function ChatInterface({ data, salesData, purchaseData, cardData 
     const [hasLoaded, setHasLoaded] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    // Initial Load from localStorage
+    // 서버에 히스토리 저장
+    const saveToServer = async (msgs: Message[], hist: ChatHistoryItem[], ins: Insight[]) => {
+        try {
+            await fetch("/api/history", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ messages: msgs, history: hist, insights: ins })
+            });
+        } catch (e) {
+            console.error("Failed to save history to server", e);
+        }
+    };
+
+    // Initial Load from Server (Fall back to localStorage if server fails/empty)
     useEffect(() => {
-        // 1. 인사이트 로드
-        const savedInsights = localStorage.getItem("ceo_insights_v4");
-        if (savedInsights) {
-            try { setInsights(JSON.parse(savedInsights)); } catch (e) { console.error(e); }
-        }
-
-        // 2. 대화 히스토리 리스트 로드
-        const savedHistory = localStorage.getItem("ceo_chat_history_list_v1");
-        if (savedHistory) {
-            try { setHistory(JSON.parse(savedHistory)); } catch (e) { console.error(e); }
-        }
-
-        // 3. 현재 진행 중인 대화 로드
-        const savedChat = localStorage.getItem("ceo_chat_history_v1");
-        if (savedChat) {
+        const loadHistory = async () => {
             try {
-                const parsedChat = JSON.parse(savedChat);
-                setMessages(parsedChat.length > 0 ? parsedChat : [{ role: "bot", content: WELCOME_MESSAGE }]);
-            } catch (e) {
-                setMessages([{ role: "bot", content: WELCOME_MESSAGE }]);
-            }
-        } else {
-            setMessages([{ role: "bot", content: WELCOME_MESSAGE }]);
-        }
+                const response = await fetch("/api/history");
+                const serverData = await response.json();
 
-        setHasLoaded(true);
+                if (serverData.messages && serverData.messages.length > 0) {
+                    setMessages(serverData.messages as Message[]);
+                    setHistory(serverData.history || []);
+                    setInsights(serverData.insights || []);
+                } else {
+                    // 서버 데이터가 없으면 localStorage 시도
+                    const savedInsights = localStorage.getItem("ceo_insights_v4");
+                    if (savedInsights) {
+                        try { setInsights(JSON.parse(savedInsights)); } catch (e) { console.error(e); }
+                    }
+
+                    const savedHistory = localStorage.getItem("ceo_chat_history_list_v1");
+                    if (savedHistory) {
+                        try { setHistory(JSON.parse(savedHistory)); } catch (e) { console.error(e); }
+                    }
+
+                    const savedChat = localStorage.getItem("ceo_chat_history_v1");
+                    if (savedChat) {
+                        try {
+                            const parsedChat = JSON.parse(savedChat);
+                            setMessages(parsedChat.length > 0 ? parsedChat : [{ role: "bot", content: WELCOME_MESSAGE }]);
+                        } catch (e) {
+                            setMessages([{ role: "bot", content: WELCOME_MESSAGE }]);
+                        }
+                    } else {
+                        setMessages([{ role: "bot", content: WELCOME_MESSAGE }]);
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to load history from server, using localStorage fallback", error);
+                // 에러 시 localStorage 로드 (기존 로직)
+                const savedChat = localStorage.getItem("ceo_chat_history_v1");
+                if (savedChat) {
+                    try {
+                        const parsedChat = JSON.parse(savedChat);
+                        setMessages(parsedChat.length > 0 ? parsedChat : [{ role: "bot", content: WELCOME_MESSAGE }]);
+                    } catch (e) { setMessages([{ role: "bot", content: WELCOME_MESSAGE }]); }
+                } else {
+                    setMessages([{ role: "bot", content: WELCOME_MESSAGE }]);
+                }
+            } finally {
+                setHasLoaded(true);
+            }
+        };
+
+        loadHistory();
     }, []);
 
-    // Periodic & State change Save
+    // Periodic & State change Save to Server & LocalStorage
     useEffect(() => {
         if (hasLoaded) {
+            // LocalStorage (브라우저 캐시용)
             localStorage.setItem("ceo_insights_v4", JSON.stringify(insights));
             localStorage.setItem("ceo_chat_history_list_v1", JSON.stringify(history));
             localStorage.setItem("ceo_chat_history_v1", JSON.stringify(messages));
+
+            // 서버 저장 (디바운스 처리하여 잦은 요청 방지)
+            const timer = setTimeout(() => {
+                saveToServer(messages, history, insights);
+            }, 1500);
+            return () => clearTimeout(timer);
         }
     }, [insights, history, messages, hasLoaded]);
 
@@ -92,7 +137,7 @@ export default function ChatInterface({ data, salesData, purchaseData, cardData 
             setHistory(prev => [newHistoryItem, ...prev]);
         }
 
-        const initialSet = [{ role: "bot", content: WELCOME_MESSAGE }];
+        const initialSet: Message[] = [{ role: "bot", content: WELCOME_MESSAGE }];
         setMessages(initialSet);
     };
 
@@ -230,8 +275,8 @@ export default function ChatInterface({ data, salesData, purchaseData, cardData 
                 {messages.map((m, i) => (
                     <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                         <div className={`p-4 rounded-2xl text-[13px] max-w-[85%] border shadow-sm ${m.role === "user"
-                                ? "bg-blue-600 text-white rounded-tr-none font-bold border-blue-500 shadow-blue-500/20"
-                                : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-tl-none border-slate-100 dark:border-slate-700 shadow-slate-200/50"
+                            ? "bg-blue-600 text-white rounded-tr-none font-bold border-blue-500 shadow-blue-500/20"
+                            : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-tl-none border-slate-100 dark:border-slate-700 shadow-slate-200/50"
                             }`}>
                             <div className="whitespace-pre-wrap leading-relaxed prose prose-slate dark:prose-invert max-w-none text-inherit">{cleanDisplay(m.content)}</div>
                         </div>
