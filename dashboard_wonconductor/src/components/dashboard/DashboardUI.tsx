@@ -9,11 +9,12 @@ interface StatCardProps {
   label: string;
   value: string | number;
   trend?: string;
+  comparison?: string;
   icon: LucideIcon;
   delay?: number;
 }
 
-export function StatCard({ label, value, trend, icon: Icon, delay = 0 }: StatCardProps) {
+export function StatCard({ label, value, trend, comparison = "vs 전월", icon: Icon, delay = 0 }: StatCardProps) {
   const isPositive = trend?.startsWith('+');
 
   return (
@@ -33,10 +34,10 @@ export function StatCard({ label, value, trend, icon: Icon, delay = 0 }: StatCar
             <span className="text-3xl font-bold font-outfit text-slate-900 dark:text-slate-100 tracking-tight">{value}</span>
             {trend && (
               <span className={cn(
-                "text-[11px] font-bold mt-1.5 inline-flex items-center",
+                "text-[11px] font-bold mt-1.5 inline-flex items-center whitespace-nowrap",
                 isPositive ? "text-emerald-500 dark:text-emerald-400" : "text-red-500 dark:text-red-400"
               )}>
-                 {trend} <span className="text-slate-400 dark:text-slate-600 font-medium ml-1">vs 전월</span>
+                 {trend} <span className="text-slate-400 dark:text-slate-600 font-medium ml-1">{comparison}</span>
               </span>
             )}
           </div>
@@ -46,18 +47,31 @@ export function StatCard({ label, value, trend, icon: Icon, delay = 0 }: StatCar
   );
 }
 
-export function SectionHeader({ title, description, badge }: { title: string; description?: string; badge?: string }) {
+export function SectionHeader({ 
+  title, 
+  description, 
+  badge, 
+  action 
+}: { 
+  title: string; 
+  description?: string; 
+  badge?: string;
+  action?: React.ReactNode;
+}) {
   return (
     <div className="flex items-center justify-between mb-6">
       <div className="space-y-1">
         <h3 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">{title}</h3>
         {description && <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{description}</p>}
       </div>
-      {badge && (
-        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 uppercase tracking-wider">
-          {badge}
-        </span>
-      )}
+      <div className="flex items-center gap-3">
+        {badge && (
+          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 uppercase tracking-wider">
+            {badge}
+          </span>
+        )}
+        {action}
+      </div>
     </div>
   );
 }

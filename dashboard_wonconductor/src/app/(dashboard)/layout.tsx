@@ -14,7 +14,8 @@ import {
   Bell,
   Search,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Beaker
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -33,6 +34,7 @@ const menuItems = [
   { id: "production", label: "생산현황", icon: Factory, href: "/production" },
   { id: "inventory", label: "재고현황", icon: Package, href: "/inventory" },
   { id: "quality", label: "품질현황", icon: ShieldCheck, href: "/quality" },
+  { id: "rnd", label: "연구 개발 현황", icon: Beaker, href: "/rnd" },
   { id: "attendance", label: "근태현황", icon: Users, href: "/attendance" },
 ];
 
