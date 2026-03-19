@@ -9,6 +9,7 @@ import {
   Users
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PhotoUpload } from "@/components/ui/photo-upload";
 
 export default function HrOpsPage() {
   const [activeTab, setActiveTab] = useState("dorm"); // dorm, attendance
@@ -106,6 +107,8 @@ export default function HrOpsPage() {
                 />
               </div>
 
+              <PhotoUpload label="현장 사진 (고장 부위)" maxPhotos={3} />
+
               <button className="w-full py-5 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white rounded-2xl font-black text-lg shadow-lg shadow-indigo-500/20 transition-all mt-4">
                 관리팀 접수
               </button>
@@ -157,6 +160,8 @@ export default function HrOpsPage() {
                   className="w-full h-13 px-5 bg-slate-50 dark:bg-slate-900/50 border dark:border-slate-800 border-slate-200 rounded-2xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all font-medium"
                 />
               </div>
+
+              <PhotoUpload label="증빙/기안 사진 (선택)" maxPhotos={2} />
 
               <button className="w-full py-5 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white rounded-2xl font-black text-lg shadow-lg shadow-emerald-500/20 transition-all mt-4">
                 근태 기안하기

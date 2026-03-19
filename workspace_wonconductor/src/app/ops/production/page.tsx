@@ -10,12 +10,15 @@ import {
   Minus,
   Plus,
   Search,
-  TrendingUp
+  TrendingUp,
+  AlertTriangle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PhotoUpload } from "@/components/ui/photo-upload";
 
 export default function ProductionOpsPage() {
   const [activeTab, setActiveTab] = useState("inspection"); // inspection, inventory, performance, process
+  const [inventoryAction, setInventoryAction] = useState("in"); // in, out, defect
 
   const tabs = [
     { id: "inspection", label: "설비 점검" },
@@ -29,10 +32,10 @@ export default function ProductionOpsPage() {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
         <div className="space-y-2">
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
             생산 및 설비
           </h1>
-          <p className="text-slate-500 dark:text-slate-400 font-medium">
+          <p className="text-slate-500 dark:text-slate-400 font-bold">
             실시간 공정 가동 현황 모니터링 및 자재/설비 관련 현장 실무를 지원합니다.
           </p>
         </div>
@@ -45,7 +48,7 @@ export default function ProductionOpsPage() {
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={cn(
-              "flex-1 py-3 px-4 rounded-xl text-sm font-bold transition-all duration-200",
+              "flex-1 py-3 px-4 rounded-xl text-sm font-black transition-all duration-200",
               activeTab === tab.id
                 ? "bg-white dark:bg-slate-800 text-blue-600 dark:text-white shadow-sm ring-1 ring-slate-200 dark:ring-slate-700"
                 : "text-slate-500 dark:text-slate-500 hover:text-slate-900 dark:hover:text-slate-300"
@@ -107,6 +110,10 @@ export default function ProductionOpsPage() {
               />
             </div>
 
+            <div className="pt-2">
+                <PhotoUpload label="현장 점검 사진 (이상 발견 시)" maxPhotos={5} />
+              </div>
+
             <button className="w-full py-6 bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:scale-[1.02] active:scale-[0.98] rounded-2xl font-black text-xl shadow-xl transition-all mt-4">
               점검 완료 보고
             </button>
@@ -118,7 +125,6 @@ export default function ProductionOpsPage() {
       {activeTab === "inventory" && (
         <div className="animate-in slide-in-from-bottom-4 duration-500 space-y-6">
           <div className="dark:bg-[#0B1120] bg-white rounded-3xl border dark:border-slate-800 border-slate-200 shadow-xl overflow-hidden p-8 space-y-8">
-            {/* Form Header */}
             <div className="space-y-2">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-blue-500/10 rounded-lg">
@@ -136,18 +142,19 @@ export default function ProductionOpsPage() {
             {/* Sub-Action Buttons Grid */}
             <div className="grid grid-cols-3 gap-3">
               {[
-                { label: "자재입고", active: true, highlight: "text-blue-500" },
-                { label: "자재출고", active: false, highlight: "text-amber-500" },
-                { label: "불량처리", active: false, highlight: "text-rose-500" }
-              ].map((btn, idx) => (
+                { id: "in", label: "자재입고", highlight: "text-blue-500" },
+                { id: "out", label: "자재출고", highlight: "text-amber-500" },
+                { id: "defect", label: "불량처리", highlight: "text-rose-500" }
+              ].map((btn) => (
                 <button 
-                  key={idx}
+                  key={btn.id}
+                  onClick={() => setInventoryAction(btn.id)}
                   className={cn(
                     "py-3.5 px-2 rounded-2xl text-[11px] font-black transition-all border",
-                    btn.active 
-                      ? "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white" 
+                    inventoryAction === btn.id 
+                      ? "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white ring-2 ring-slate-200 dark:ring-slate-700" 
                       : "bg-white dark:bg-slate-900/50 border-slate-100 dark:border-slate-800 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800",
-                    btn.highlight
+                    inventoryAction === btn.id ? btn.highlight : ""
                   )}
                 >
                   {btn.label}
@@ -205,8 +212,23 @@ export default function ProductionOpsPage() {
                 />
               </div>
 
-              <button className="w-full py-5 bg-[#FF6B00] hover:bg-[#E56000] active:scale-[0.98] text-white rounded-2xl font-black text-lg shadow-xl shadow-orange-500/20 transition-all mt-4 border border-orange-400/20">
-                내역 등록
+              <div className="pt-2">
+                <PhotoUpload 
+                  label={inventoryAction === 'defect' ? "불량 부위 사진 (증빙)" : "물표/자재 사진 (OCR 스캔)"} 
+                  maxPhotos={inventoryAction === 'defect' ? 5 : 2} 
+                  showOcr={inventoryAction !== 'defect'} 
+                />
+              </div>
+
+              <button className={cn(
+                "w-full py-5 active:scale-[0.98] text-white rounded-2xl font-black text-lg shadow-xl transition-all mt-4 border border-white/10",
+                inventoryAction === 'in' ? "bg-blue-600 shadow-blue-500/20" : 
+                inventoryAction === 'out' ? "bg-amber-600 shadow-amber-500/20" : 
+                "bg-rose-600 shadow-rose-500/20"
+              )}>
+                {inventoryAction === 'in' ? "입고 내역 등록" : 
+                 inventoryAction === 'out' ? "출고 내역 등록" : 
+                 "불량 처리 보고"}
               </button>
             </div>
           </div>
@@ -234,7 +256,6 @@ export default function ProductionOpsPage() {
 
             {/* Form Fields */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-              {/* Item Info */}
               <div className="space-y-2.5">
                 <label className="text-xs font-black dark:text-slate-300 text-slate-700 ml-1 uppercase tracking-widest">
                   작업지시 / 품목 코드
@@ -254,7 +275,6 @@ export default function ProductionOpsPage() {
                 </div>
               </div>
 
-              {/* Line Select */}
               <div className="space-y-2.5">
                 <label className="text-xs font-black dark:text-slate-300 text-slate-700 ml-1 uppercase tracking-widest">
                   생산 라인
@@ -266,7 +286,6 @@ export default function ProductionOpsPage() {
                 </select>
               </div>
 
-              {/* Target Quantity */}
               <div className="space-y-2.5">
                 <label className="text-xs font-black dark:text-slate-300 text-slate-700 ml-1 uppercase tracking-widest">
                   일일 목표 수량 (EA)
@@ -278,7 +297,6 @@ export default function ProductionOpsPage() {
                 />
               </div>
 
-              {/* Actual Quantity */}
               <div className="space-y-2.5">
                 <label className="text-xs font-black dark:text-slate-300 text-slate-700 ml-1 uppercase tracking-widest">
                   생산 실적 (EA)
@@ -296,7 +314,6 @@ export default function ProductionOpsPage() {
                 </div>
               </div>
 
-              {/* Defect Quantity */}
               <div className="space-y-2.5">
                 <label className="text-xs font-black dark:text-slate-300 text-slate-700 ml-1 uppercase tracking-widest text-rose-500">
                   불량 수량 (EA)
@@ -314,7 +331,6 @@ export default function ProductionOpsPage() {
                 </div>
               </div>
 
-              {/* Progress Indicator (Calculated) */}
               <div className="space-y-2.5">
                 <label className="text-xs font-black dark:text-slate-300 text-slate-700 ml-1 uppercase tracking-widest">
                   달성률
@@ -325,6 +341,10 @@ export default function ProductionOpsPage() {
                   </div>
                   <span className="text-sm font-black text-emerald-500">95%</span>
                 </div>
+              </div>
+
+              <div className="md:col-span-2 pt-4">
+                <PhotoUpload label="현장 실적 증빙/공정 서류 (OCR)" maxPhotos={3} showOcr={true} />
               </div>
             </div>
 
@@ -337,18 +357,18 @@ export default function ProductionOpsPage() {
 
       {/* Content Area - Process Status (공정 가동 현황) */}
       {activeTab === "process" && (
-        <div className="animate-in slide-in-from-bottom-4 duration-500">
+        <div className="animate-in slide-in-from-bottom-4 duration-500 space-y-6">
           <div className="dark:bg-[#0B1120] bg-white rounded-3xl border dark:border-slate-800 border-slate-200 shadow-xl overflow-hidden p-8 space-y-8">
             <div className="space-y-2">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-emerald-500/10 rounded-lg">
                   <Activity className="w-5 h-5 text-emerald-500" />
                 </div>
-                <h2 className="text-xl font-bold dark:text-white text-slate-900">
+                <h2 className="text-xl font-extrabold dark:text-white text-slate-900">
                   실시간 공정 가동률
                 </h2>
               </div>
-              <p className="text-sm dark:text-slate-400 text-slate-500 font-medium ml-13">
+              <p className="text-sm dark:text-slate-400 text-slate-500 font-bold ml-13">
                 주요 생산 라인의 현재 가동 상태를 실시간으로 확인합니다.
               </p>
             </div>

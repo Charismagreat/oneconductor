@@ -12,6 +12,7 @@ import {
   ShieldCheck
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PhotoUpload } from "@/components/ui/photo-upload";
 
 export default function SafetyOpsPage() {
   const [activeTab, setActiveTab] = useState("safety"); // safety, env_check, training
@@ -203,6 +204,10 @@ export default function SafetyOpsPage() {
                   rows={4}
                   className="w-full p-5 bg-slate-50 dark:bg-slate-900/50 border dark:border-slate-800 border-slate-200 rounded-2xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all font-medium resize-none"
                 />
+              </div>
+
+              <div className="pt-2">
+                <PhotoUpload label="현장 위반/위험/환경 상태 사진" maxPhotos={5} />
               </div>
 
               <button className="w-full py-5 bg-orange-600 hover:bg-orange-700 active:scale-[0.98] text-white rounded-2xl font-black text-lg shadow-lg shadow-orange-500/20 transition-all mt-4">

@@ -18,6 +18,7 @@ import {
   FileSignature
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PhotoUpload } from "@/components/ui/photo-upload";
 
 export default function AdminOpsPage() {
   const [activeTab, setActiveTab] = useState("expense"); // expense, facility, attendance
@@ -93,19 +94,6 @@ export default function AdminOpsPage() {
                         <option>제조원가</option>
                         <option>영업외비용</option>
                         <option>법인세</option>
-                        <option>영업수익</option>
-                        <option>영업외수익</option>
-                        <option>자본금</option>
-                        <option>자본잉여금</option>
-                        <option>이익잉여금</option>
-                        <option>유동부채</option>
-                        <option>비유동부채</option>
-                        <option>당좌자산</option>
-                        <option>재고자산</option>
-                        <option>투자자산</option>
-                        <option>유형자산</option>
-                        <option>무형자산</option>
-                        <option>기타비유동자산</option>
                       </select>
                       <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-400 pointer-events-none" />
                     </div>
@@ -117,30 +105,9 @@ export default function AdminOpsPage() {
                     <div className="relative group">
                       <select className="w-full h-13 px-4 bg-slate-50 dark:bg-slate-900/50 border dark:border-slate-800 border-slate-200 rounded-xl text-xs font-bold appearance-none focus:ring-2 focus:ring-emerald-500/20 transition-all">
                         <option>복리후생비</option>
-                        <option>급여</option>
-                        <option>퇴직급여</option>
                         <option>여비교통비</option>
                         <option>접대비</option>
-                        <option>통신비</option>
-                        <option>수도광열비</option>
-                        <option>세금과공과</option>
-                        <option>감가상각비</option>
-                        <option>임차료</option>
-                        <option>수선비</option>
-                        <option>보험료</option>
-                        <option>차량유지비</option>
-                        <option>경상연구개발비</option>
-                        <option>운반비</option>
-                        <option>교육훈련비</option>
-                        <option>도서인쇄비</option>
                         <option>소모품비</option>
-                        <option>지급수수료</option>
-                        <option>광고선전비</option>
-                        <option>대손상각비</option>
-                        <option>잡비</option>
-                        <option>이자비용</option>
-                        <option>기부금</option>
-                        <option>법인세</option>
                       </select>
                       <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-400 pointer-events-none" />
                     </div>
@@ -148,71 +115,13 @@ export default function AdminOpsPage() {
 
                   {/* 세분류 */}
                   <div className="space-y-2">
-                    <span className="text-[11px] font-black text-slate-500 ml-1">세분류 (소분류)</span>
+                    <span className="text-[11px] font-black text-slate-500 ml-1">세분류</span>
                     <div className="relative group">
                       <select className="w-full h-13 px-4 bg-slate-50 dark:bg-slate-900/50 border dark:border-slate-800 border-slate-200 rounded-xl text-xs font-bold appearance-none focus:ring-2 focus:ring-emerald-500/20 transition-all">
                         <option>식대</option>
                         <option>직원회식비</option>
-                        <option>급여</option>
-                        <option>시간외수당</option>
-                        <option>직책수당</option>
-                        <option>특수수당</option>
-                        <option>연장근로수당</option>
-                        <option>연차수당</option>
-                        <option>제경조금</option>
-                        <option>식당소모품비</option>
-                        <option>기념품및선물대</option>
-                        <option>의료비</option>
-                        <option>산재보험료</option>
-                        <option>의료보험료</option>
-                        <option>작업복대</option>
-                        <option>학자금</option>
-                        <option>행사비</option>
-                        <option>고용보험료</option>
-                        <option>차량유지비</option>
-                        <option>시내교통비</option>
-                        <option>주차및통행료</option>
-                        <option>국내출장비</option>
-                        <option>해외출장비</option>
-                        <option>당일출장비</option>
-                        <option>전임및부임여비</option>
                         <option>유류대</option>
-                        <option>숙박비</option>
-                        <option>전화료</option>
-                        <option>우편료</option>
-                        <option>전화전용회선료</option>
-                        <option>데이타전용회선료</option>
-                        <option>보수유지비</option>
-                        <option>수도료</option>
-                        <option>가스비</option>
-                        <option>재산세</option>
-                        <option>공과금</option>
-                        <option>인지세</option>
-                        <option>증지세</option>
-                        <option>등록세</option>
-                        <option>면허세</option>
-                        <option>주민세</option>
-                        <option>사업소세</option>
-                        <option>자동차세</option>
-                        <option>국민연금</option>
-                        <option>증권세</option>
-                        <option>토지</option>
-                        <option>건물</option>
-                        <option>기계</option>
-                        <option>구축물</option>
-                        <option>사무실</option>
-                        <option>비품</option>
-                        <option>기계장치</option>
-                        <option>공구와기구</option>
-                        <option>컴퓨터및부수기재</option>
-                        <option>화재보험료</option>
-                        <option>자동차보험료</option>
-                        <option>보증보험료</option>
-                        <option>기타보험료</option>
-                        <option>경조금</option>
-                        <option>요식대</option>
-                        <option>선물대</option>
-                        <option>찬조금</option>
+                        <option>박람회참가비</option>
                       </select>
                       <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-400 pointer-events-none" />
                     </div>
@@ -229,8 +138,6 @@ export default function AdminOpsPage() {
                     <option>법인카드</option>
                     <option>개인카드 (사후 청구)</option>
                     <option>현금 (영수증 첨부)</option>
-                    <option>송금</option>
-                    <option>자동 이체</option>
                   </select>
                   <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-hover:text-slate-200 pointer-events-none" />
                 </div>
@@ -277,23 +184,17 @@ export default function AdminOpsPage() {
               </div>
             </div>
 
-            {/* Receipt Scan Section */}
             <div className="space-y-4 pt-4">
               <span className="text-xs font-black text-emerald-500 uppercase tracking-widest ml-1 flex items-center gap-2">
                 <Receipt className="w-4 h-4" />
-                스마트 증빙 스캔
+                스마트 증빙 스캔 (OCR)
               </span>
-              <button className="w-full py-12 flex flex-col items-center justify-center gap-4 bg-slate-50 dark:bg-slate-900/30 border-2 border-dashed dark:border-emerald-500/30 border-emerald-200 rounded-[2.5rem] hover:bg-emerald-500/5 hover:border-emerald-500/50 transition-all group">
-                <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-sm border border-emerald-500/20">
-                  <Camera className="w-8 h-8 text-emerald-500" />
-                </div>
-                <div className="text-center">
-                  <p className="text-sm font-black text-emerald-500">카메라로 증빙 촬영</p>
-                  <p className="text-[11px] font-bold text-slate-400 mt-1">OCR로 텍스트 자동 추출</p>
-                </div>
-              </button>
+              <PhotoUpload 
+                label="영수증/전표 스마트 증빙 스캔" 
+                maxPhotos={5} 
+                showOcr={true} 
+              />
             </div>
-
 
             {/* Submit Button */}
             <button className="w-full py-6 bg-emerald-500 hover:bg-emerald-600 active:scale-[0.98] text-white rounded-2xl font-black text-xl shadow-xl shadow-emerald-500/30 transition-all mt-4 flex items-center justify-center gap-3">
@@ -343,6 +244,10 @@ export default function AdminOpsPage() {
                   rows={6}
                   className="w-full p-6 bg-slate-50 dark:bg-slate-900/50 border dark:border-slate-800 border-slate-200 rounded-2xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all font-bold resize-none"
                 />
+              </div>
+
+              <div className="pt-2">
+                <PhotoUpload label="현장 사진 첨부" maxPhotos={5} />
               </div>
 
               <button className="w-full py-6 bg-indigo-600 hover:bg-indigo-700 active:scale-[0.98] text-white rounded-2xl font-black text-xl shadow-xl shadow-indigo-500/30 transition-all mt-4 flex items-center justify-center gap-3">
@@ -398,6 +303,10 @@ export default function AdminOpsPage() {
                   placeholder="병원 진료, 개인 사정 등 간략하게 작성"
                   className="w-full h-14 px-6 bg-slate-50 dark:bg-slate-900/50 border dark:border-slate-800 border-slate-200 rounded-2xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 transition-all font-bold"
                 />
+              </div>
+
+              <div className="pt-2">
+                <PhotoUpload label="증빙 사진 (선택)" maxPhotos={5} />
               </div>
 
               {/* Warning Alert */}
