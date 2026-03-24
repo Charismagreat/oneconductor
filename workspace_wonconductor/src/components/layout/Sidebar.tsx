@@ -62,11 +62,11 @@ export function Sidebar() {
         )}>
           <div className="flex items-center gap-3 overflow-hidden">
             <div className="w-10 h-10 min-w-[40px] bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
-              <span className="text-white font-bold text-xl leading-none">O</span>
+              <span className="text-white font-bold text-xl leading-none">W</span>
             </div>
             {isOpen && (
               <span className="dark:text-white text-slate-800 font-extrabold text-lg tracking-wider whitespace-nowrap animate-in fade-in duration-500">
-                ONECONDUCTOR
+                WONCONDUCTOR
               </span>
             )}
           </div>

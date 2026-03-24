@@ -15,7 +15,7 @@ export function Header() {
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
         {/* Mobile Title */}
-        <h1 className="text-xl font-bold dark:text-white text-slate-800 md:hidden">ONECONDUCTOR</h1>
+        <h1 className="text-xl font-bold dark:text-white text-slate-800 md:hidden">WONCONDUCTOR</h1>
       </div>
       
       <div className="flex items-center gap-4">

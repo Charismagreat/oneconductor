@@ -114,7 +114,7 @@ export default function AIAppPage() {
                 <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 border-2 border-white dark:border-[#0B1120] rounded-full animate-pulse shadow-sm shadow-emerald-500/50"></div>
               </div>
               <div className="space-y-0.5">
-                <h3 className="text-sm font-black dark:text-white text-slate-900">ONECONDUCTOR AI</h3>
+                <h3 className="text-sm font-black dark:text-white text-slate-900">WONCONDUCTOR AI</h3>
                 <p className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest">Active Now</p>
               </div>
             </div>

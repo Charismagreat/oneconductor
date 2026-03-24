@@ -69,11 +69,11 @@ export default function DashboardLayout({
           )}>
             <div className="flex items-center gap-3 overflow-hidden">
               <div className="w-10 h-10 min-w-[40px] bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20 font-bold text-white text-xl">
-                O
+                W
               </div>
               {isSidebarOpen && (
                 <span className="font-extrabold text-lg tracking-wider text-slate-900 dark:text-white whitespace-nowrap animate-in fade-in duration-500">
-                  ONECONDUCTOR
+                  WONCONDUCTOR
                 </span>
               )}
             </div>
