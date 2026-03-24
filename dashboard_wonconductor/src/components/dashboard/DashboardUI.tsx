@@ -51,18 +51,27 @@ export function SectionHeader({
   title, 
   description, 
   badge, 
-  action 
+  action,
+  icon: Icon
 }: { 
   title: string; 
   description?: string; 
   badge?: string;
   action?: React.ReactNode;
+  icon?: LucideIcon;
 }) {
   return (
     <div className="flex items-center justify-between mb-6">
-      <div className="space-y-1">
-        <h3 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">{title}</h3>
-        {description && <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{description}</p>}
+      <div className="flex items-center gap-3">
+        {Icon && (
+          <div className="p-2 rounded-xl bg-blue-500/10 text-blue-500">
+            <Icon size={20} />
+          </div>
+        )}
+        <div className="space-y-1">
+          <h3 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">{title}</h3>
+          {description && <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{description}</p>}
+        </div>
       </div>
       <div className="flex items-center gap-3">
         {badge && (
